@@ -1,0 +1,258 @@
+\documentclass[10pt,landscape]{article}
+\usepackage[slovene]{babel}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{icomma}
+\usepackage{physics}
+\usepackage{lipsum}
+
+\pdfinfo{
+  /Title (Uporabne formule iz verjetnosti v fiziki)
+  /Author (Andraž Sitar)
+  /Subject (Verjetnost v fiziki)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1 cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newcommand{\mc}{\mathcal}
+\newcommand{\avg}[1]{\overline{#1}}
+\renewcommand{\vec}{\vb}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\med}{\mathrm{med}}
+\newcommand{\dbar}{\dd\hspace*{-0.18em}\bar{}\hspace*{0.1em}}
+
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\section{Kombinatorika}
+Izmed $N$ slučajnih, neodvisnih dogodkov ima vsak $n_i$ izidov. \\
+Število različnih izidov sestavljenega dogodka je $\prod_{i=1}^N n_i$ \\
+
+\subsubsection{Variacije}
+Izmed $N$ elementov množice \emph{razvrstimo} $n$ elementov. Število \emph{variacij} je
+$ \frac{N!}{\left( N - n \right)!} $ \\
+
+\subsubsection{Permutacije}
+Razvrstimo \emph{vse} elemente množice, moči $N$. Množica je razdeljena na \emph{skupine}, moči $m_i$, katerih elementi so nerazločljivi. Število \emph{permutacij} je $ \frac{N!}{\prod_{i}(m_i!)} $
+
+\subsubsection{Kombinacije}
+Izmed $N$ elementov množice \emph{izberemo} $n$ elementov, oziroma izberemo podmnožico množice. Število \emph{kombinacij brez ponavljanja} je $ {N \choose n} = \frac{N!}{n! \left( N - n \right)!} $ \\
+\medskip
+Izid vsakega izmed zaporednih, neodvisnih dogodkov je element množice, moči $N$. Število \emph{kombinacij s ponavljanjem} je $ {N + n - 1 \choose n} = \frac{\left( N + n - 1 \right)!}{\left( N - 1 \right)! n!} $ \\
+
+\section{Verjetnost}
+\subsubsection{Uvedba novih slučajnih spremenljivk}
+Za $\vec X, \vec U \in \mathbb{R}^n$ in bijektivno $h:\vec X \rightarrow \vec U$ velja
+$f_{\vec U} \left(\vec U \right) = f_{\vec X} \left(h^{-1} \left(\vec U\right)\right) \left| \det \left( \partialderivative{\vec U} h^{-1} \left( \vec U \right) \right) \right| $ \\
+Če $h$ ni bijekcija, def. bijekcije $h_i: X_i \rightarrow U \ni: \bigcup_i X_i = X$ \\
+S $h_i$ dobimo (nenormiran) $f_{i,\vec U}$, torej $f_{\vec U} \left(\vec U \right) = \sum_{i} f_{i,\vec U}$ \\
+\smallskip
+Po dogovoru je \emph{nosilec} podan kot domena, \emph{domena} pa je $\mathbb{R}^n$. \\
+$f(x_2, x_3, \dots, x_N) = \int_{x_1} f(x_1, x_2, \dots, x_N) \dd x_1$ \\
+\subsubsection{Bayesov teorem in neodvisne spremenljivke}
+(Sledeče enačbe so simetrične) \\
+Za dogodka $A$ in $B$ velja, da je verjetnost, da se zgodi dogodek $A$, če se zgodi dogodek $B$ enaka \qquad
+$P(A \cap B) = P(B)P(A|B)$ \\
+Pri zvezni porazdelitvi s slučajnima spremenljivkama $X$ in $Y$ podobno velja \qquad
+$f_{X,Y}\left(x,y\right) = f_y\left(y\right)f_{X|Y}\left(x|y\right)$ \\
+Dogodka $A$ in $B$ sta neodvisna, čee \\
+Diskretna porazdelitev: \quad $P(A) = P(A|B) = P(A|\avg{B})$ \\
+Zvezna porazdelitev: \qquad $f_{X}(x) = f_{X|Y}(X|Y) = f_{X|Y}(X|\avg{Y})$ \\
+Zato za neodvisne spremenljivke velja
+$P(A,B) = P(A)P(B) \qquad f_{X,Y} \left(X,Y\right) = f_X \left(X\right) f_Y \left(Y\right)$
+
+\subsection{Zvezne porazdelitve ($x \in \mathbb{R}$)}
+\subsubsection{Enakomerna porazdelitev ($X \thicksim U\left(a,b\right)$)}
+$f_{X}\left(x\right) =
+\begin{cases} 
+	\frac{1}{b-a} & x \in \left(a,b\right) \\
+	0 & \mathrm{sicer} \\
+\end{cases}$ \qquad
+$F_{X}\left(x\right) =
+\begin{cases}
+	0 & x < a \\
+	\frac{x-a}{b-a} & x \in \left(a,b\right) \\
+	1 & x > b \\
+\end{cases}$ \\
+$\avg{X} = \frac{a+b}{2} \qquad \sigma_X^2 = \frac{\left( b-a \right)^2}{12}$
+
+\medskip
+\subsubsection{Gaussova porazdelitev ($X \thicksim N\left(\mu,\sigma\right)$)}
+$f_{X}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp\left({-\frac{1}{2} \left(\frac{x - \mu}{\sigma}\right)^2}\right)$ \qquad $\avg{X} = \mu \qquad \sigma_X = \sigma$
+$F_{X}(x) = \frac{1}{2}\left(1 + \erf \left(\frac{x - \mu}{ \sqrt{2}\sigma}\right)\right)$ \qquad $\mathrm{WFHM} = 2 \sqrt{2\log 2} \sigma$ \\
+
+\medskip
+\subsubsection{Maxwellova porazdelitev}
+3 neodv. in neomej. $q_i, \quad \vec q = (q_1, q_2, q_3), \quad \avg{\vec q} = 0 \quad q = |\vec q| \geq 0$ \\
+$ f_Q(q) = \sqrt{\frac{2}{\pi}} \frac{q^2}{a^3} \exp\left(-\frac{q^2}{2 a^2}\right) $ \qquad $\avg{Q} = 2a \sqrt{\frac{2}{\pi}}$ \\
+$F_Q(q) = \erf \left( \frac{q}{\sqrt{2} a} \right) - \sqrt{\frac{2}{\pi}} \frac{q}{a} \exp \left( -\frac{q^2}{2 a^2} \right)$ \qquad $\sigma_Q^2 = \frac{a^2 \left( 3\pi - 8 \right)}{\pi}$
+
+\medskip
+\subsubsection{Eksponentna porazdelitev}
+$t \geq 0 \qquad f_T(t) = \frac{1}{\tau}\exp\left(-\frac{t}{\tau}\right) \qquad F_T(t) = 1 - \exp\left(-\frac{t}{\tau}\right) $ \\
+$ \avg{T} = \tau \qquad \sigma_T^2 = \tau^2 $
+
+\subsubsection{Cauchyjeva porazdelitev ($ X \thicksim \mathrm{Cauchy}(\mu, \gamma) $)}
+$f_{X}\left(x\right) = \frac{1}{\pi} \frac{\gamma}{\gamma^2 + x^2} \qquad F(x) = \frac{1}{\pi} \arctan \left(\frac{\left( x - \mu \right)}{\gamma}\right) + \frac{1}{2} $ \\
+$\nexists \langle x^\alpha \rangle$ za $|\alpha| \geq 1$ \quad $\med(X) = \mu$ \quad $\mathrm{MAD}_X = \gamma$ \\
+
+\subsubsection{Studentova t-porazdelitev}
+$f_T(t, \nu) = \frac{1}{\sqrt{\nu} B(\frac{\nu}{2}, \frac{1}{2})}\left( 1 + \frac{t^2}{\nu} \right)^{-\frac{\nu+1}{2}}$ \qquad $\avg{T} = 0$ \\
+$\lim_{\nu \rightarrow \infty (30)} f_T(t, \nu) = N(0,1)$ \qquad $\sigma_T^2 = \frac{\nu}{\nu - 2}$ \\
+
+\subsubsection{$\chi^2$ porazdelitev ($X \thicksim \chi^2(\nu)$)}
+$x>0 \qquad f_X(x, \nu) = \frac{2^{-\frac{\nu}{2}}}{\Gamma\left( \frac{\nu}{2} \right)} x^{\frac{\nu}{2}-1} \exp \left( -\frac{x}{2} \right)$
+$\avg{X} = \nu \qquad \sigma_X^2 = 2\nu$
+
+\subsubsection{$F$ porazdelitev}
+$f_F(x;\nu_1, \nu_2) = \frac{1}{B\left( \frac{\nu_1}{2}, \frac{\nu_2}{2} \right)} \left( \frac{\nu_1}{\nu_2} \right)^{\frac{\nu_1}{2}} x^{\frac{\nu_1}{2} - 1} \left( 1 + \frac{\nu_1}{\nu_2} x \right)^{-\frac{\nu_1 + \nu_2}{2}} $
+$\avg{X} = \frac{\nu_2}{\nu_2 - 2} \qquad \sigma_X^2 = \frac{2 \nu_2^2 \left( \nu_1 + \nu_2 - 2 \right)}{\nu_1 \left( \nu_2 - 2 \right)^2 \left( \nu_2 - 4 \right)}$
+
+\subsection{Diskretne porazdelitve ($x \in \mathbb{N} \cup \left\{ 0 \right\}$)}
+\subsubsection{Bernoullijeva porazdelitev}
+Velja za dogodke, ki se pri poskusu zgodijo z verjetnostjo $p$.
+$P(X=x, p) = p^x q^{1-x} = px + q \left(1-x\right) \quad x \in \{0, 1\} \quad p+q=1 $
+
+\subsubsection{Binomska porazdelitev $\left( X \thicksim B \left( N, p \right) \right)$}
+$N$ zaporednih, enakih, neodvisnih Bernoullijevih poskusov, \\
+$P$ verjetnost, da je $x$ poskusov imelo pozitiven $(1)$ izid.
+$P(X=x, N, p) = \binom{N}{x} p^x \left(1-p\right)^{N-x} $
+$\avg{X} = Np \qquad \sigma_{X}^2 = Np\left(1-p\right)$ \qquad
+$P \left( a \leq \frac{X - \avg{X}}{\sigma_X} \leq b \right) = $ \\
+$ = \frac{1}{\sqrt{2 \pi}} \int_{a}^{b} e^{-\frac{x^2}{2}} \ \dd x = \frac{1}{2} \left( \erf \left( \frac{b}{\sqrt{2}} \right) - \erf \left( \frac{a}{\sqrt{2}} \right) \right)$ \quad $Np,\ Nq > 5$
+
+\subsubsection{Poissonova porazdelitev $\left( X \thicksim \mathrm{Pois} \left( \lambda \right) \right)$}
+$P$ verjetnost za $x$ dogodkov, če jih pričakujemo $\lambda$. \\
+Limita binomske $N \rightarrow \infty \quad \ni:\quad Np = \lambda$ \\
+$P(X=x; \lambda) = \frac{\lambda^x}{x!} e^{-\lambda} \qquad \sigma^2_X = \avg{X} = \lambda$
+$P(X=x; \lambda) = \frac{1}{\sqrt{2\pi x}} \left( \frac{\lambda e}{x} \right)^x e^{-\lambda}$ \qquad (Stirling)
+
+\subsection{Momenti}
+Surovi moment:
+$M_p'=
+\begin{cases} 
+	\sum_{X} x^p f_X (x) & X \mathrm{\ diskretna} \\
+	\int_{X} x^p f_X (x) \ \dd x & X \mathrm{\ zvezna} \\
+\end{cases}$ \\
+Centr. moment:
+$M_p=
+\begin{cases} 
+	\sum_{X} \left(x - \avg{X}\right)^p f_X (x) & X \mathrm{\ diskretna} \\
+	\int_{X} \left(x - \avg{X}\right)^p f_X (x) \ \dd x & X \mathrm{\ zvezna} \\
+\end{cases}$ \\
+$M_0' = 1 \qquad M_1' = \avg{X} \qquad M_0 = 1 \qquad M_1 = 0$ \\
+\medskip
+Varianca: $\Var(X) = \sigma_X^2 = M_2(X)$ \\
+\medskip
+Kovarianca: $\Cov(X) = \sigma_{XY} = \avg{XY} - \avg{Y} \cdot \avg{X}$ \\
+$\Var \left( X \pm Y \right) = \Var \left( X \right) + \Var \left( Y \right) \pm 2\ \Cov \left( X, Y \right)$ \\
+\medskip
+Poševnost: $ = \frac{M_3}{\sigma_X^3} $ \qquad Presež. splošč.: $ \epsilon = \frac{M_4}{\sigma_X^4} - 3 $ \\
+
+Lin. kor. koef.: $\rho_{XY} = \frac{\sigma_{XY}}{\sigma_X \sigma_Y} \in \left[-1,1\right]$ \\
+Če $X,Y$ neodvisni, $\rho_{XY} = 0$ \\
+\medskip
+Mediana: $x_M = \med(X) \Longleftrightarrow \left( P(X < x_m) \leq \frac{1}{2} \quad P(X > x_m) \leq \frac{1}{2} \right) $ \\
+Če je $x_{M_i} = \med(X)$ več, velja $\med(X) = \avg{\left\{ x_{M_i} \right\}}$ \\
+Medianski odklon: $\mathrm{MAD} \left(X\right) = \mathrm{med} \left( \left| X - \mathrm{med}\left(X\right) \right| \right)$ \\
+
+\subsection{Konvolucija}
+$X$, $Y$ neodv., zvezni, $Z = X+Y \implies f_Z(z) = f_X(x) * f_Y(y)$ \\
+$X$, $Y$ neodv., diskretni, $P(Z=n) = \sum_{i} P(X=i) P(Y=n-i)$ \\
+\medskip
+% $\avg{Z} = \avg{X} + \avg{Y}  \qquad \sigma_Z^2 = \sigma_X^2 + \sigma_Y^2$ \\
+$ N(\mu_1, \sigma_1) + N(\mu_2, \sigma_2) \thicksim N(\mu_1 + \mu_2, \sigma_1 + \sigma_2) $
+$ \mathrm{Cauchy}(\mu_1, \gamma_1) + \mathrm{Cauchy}(\mu_2, \gamma_2) \thicksim \mathrm{Cauchy}(\mu_1 + \mu_2, \gamma_1 + \gamma_2) $ \\
+$ \sum_{i=1}^{\nu} (N(0, 1))^2 \thicksim \chi^2(\nu) $ \qquad $ \chi^2(\nu_1) +  \chi^2(\nu_2) \thicksim \chi^2(\nu_1 + \nu_2)$ \\
+\medskip
+$ B(N_1, p) + B(N_2, p) \thicksim B(N_1 + N_2, p) $ \\
+$ \mathrm{Pois} \left( \lambda_1 \right) + \mathrm{Pois} \left( \lambda_2 \right) \thicksim \mathrm{Pois} \left( \lambda_1 + \lambda_2 \right) $
+
+\subsubsection{Centralni limitni izrek}
+\emph{Izrojena} porazdelitev je podprta skoraj nikjer. Za \emph{neizrojeno} $f_X$ (vse omenjene porazdelitve), \emph{stabilno} porazdelitev $g_X$ (Gaussova ali Cauchyjeva) velja \qquad $f_X * f_X * \dots * f_X = g_X$ \\
+
+\section{Statistika}
+$S$ populacija ($\mu, \sigma$) moči $N$, $S_n$ vzorec moči $n$, $ \forall X_i \in S_n \subset S$ \\
+Stat. in cenilka: $\theta = T(S) \qquad \theta_n = T(S_n)$ \\
+$n \rightarrow \infty \qquad T(S_n) = T(S) \qquad \Var(S_n) = 0$ \qquad (doslednost)\\
+$\forall n \qquad E \left( S_n \right) = S$ \qquad (nepristranskost)\\
+\medskip
+Vzorčno povprečje (cenilka): $\avg{X} = \frac{1}{n} \sum_{i=1}^{n} X_i$ \\
+$E \left( \avg{X} \right) = \mu \qquad \Var\left( \avg{X} \right) = \frac{N-n}{N-1} \frac{\sigma^2}{n} \rightarrow \frac{\sigma^2}{n}$ (z nadom. / $N \gg 1$) \\
+Vzorčna varianca (cenilka): $S_X^2 = \frac{1}{n-1} \sum_{i=1}^{n} \left( X_i - \avg{X} \right)^2$ \\
+$ E \left( S_X^2 \right) = \sigma^2 \qquad \Var\left( S_X^2 \right) = \frac{2\sigma^4}{n} $ \\
+\medskip
+Za cenilki $X_1$ iz populacije z $\mu_1, \sigma_1$ in $X_2$ iz populacije z $\mu_2, \sigma_2$ \\
+ter $Z= X_1 \pm X_2$ velja \qquad $E \left( \avg{Z} \right) = \mu_1 \pm \mu_2$ \qquad $\Var \left( \avg{Z} \right) = \Var(\avg{X_1}) + \Var(\avg{X_2})$ \qquad $\avg{Z} \thicksim N \left( E \left( \avg{Z} \right), \sqrt{\Var \left( \avg{Z} \right)} \right)$
+
+\section{Matematičen dodatek}
+\textbf{Binomski koeficient ter formula} \\
+$ {N \choose n} = \frac{N!}{n! \left( N - n \right)!} $ \qquad $ \left( x + y \right)^N = \sum_{k=0}^{N} {N \choose k} x^k y^{N-k} $ \\
+\smallskip
+\textbf{Funkcija napake:} $ \erf \left( x \right) = \frac{2}{\sqrt{\pi}} \int_{0}^{x} \exp\left(-t^2\right) \dd t $ \\
+\smallskip
+\textbf{Totalni odvod:} $ \vec f,\ \vec x \in \mathbb{R}^n \implies \partialderivative{\vec f}{\vec x} = \left[ \partialderivative{f_i}{x_j} \right]_{ij} $ \\
+\smallskip
+\textbf{Stirlingova formula:} $ n \rightarrow \infty (> 8) \qquad n! = \sqrt{2\pi n} \left(\frac{n}{e}\right)^n $ \\
+\smallskip
+\textbf{Konvolucijski integral:} $(f*g)(t) = \int_{-\infty}^{\infty} f(\tau)g(t-\tau) \ \dd \tau$ \\
+\smallskip
+
+\vfill\null
+
+\end{multicols}
+\end{document}
